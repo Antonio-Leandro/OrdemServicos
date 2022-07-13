@@ -15,10 +15,11 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
 
     public TelaUsuario() {
         initComponents();
-        conexao = ModuloConexao.conector();
+        //conexao = ModuloConexao.conector();
     }
 
     private void consulta() {
+        conexao = ModuloConexao.conector();
         String sql = "select * from tbl_usuario where id_usuario=?";
         try {
             pst = conexao.prepareStatement(sql);
@@ -41,9 +42,20 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+        try {
+            pst.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encerrar o Statement!" + ex.getMessage());
+        }
+        try {
+            conexao.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel fechar a conexão!" + ex.getMessage());
+        }
     }
 
     private void salvar() {
+        conexao = ModuloConexao.conector();
         String sql = "insert tbl_usuario(id_usuario,usuario,celular,login,senha,perfil)"
                 + "values(?,?,?,?,?,?)";
         try {
@@ -73,9 +85,20 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel salvar os dados!" + ex.getMessage());
         }
+        try {
+            pst.cancel();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encerrar o Statement!" + ex.getMessage());
+        }
+        try {
+            conexao.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel fechar a conexão!" + ex.getMessage());
+        }
     }
 
     private void alterar() {
+        conexao = ModuloConexao.conector();
         String sql = "update tbl_usuario set usuario=?,celular=?,login=?,senha=?,perfil=?"
                 + "where id_usuario=?";
         try {
@@ -105,9 +128,20 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel atualisar o cadastro!" + ex.getMessage());
         }
+        try {
+            pst.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encerrar o Statement!" + ex.getMessage());
+        }
+        try {
+            conexao.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel fechar a conexão!" + ex.getMessage());
+        }
     }
 
     private void deletar() {
+        conexao = ModuloConexao.conector();
         int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Exclusão?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             String sql = "delete from tbl_usuario where id_usuario=?";
@@ -127,6 +161,16 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Não foi possivel deletar o cadastro!" + ex.getMessage());
             }
+        }
+        try {
+            pst.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encerrar o Statement!" + ex.getMessage());
+        }
+        try {
+            conexao.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel fechar a conexão!" + ex.getMessage());
         }
     }
 
@@ -149,7 +193,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         BtnSalvar = new javax.swing.JButton();
         BtnEditar = new javax.swing.JButton();
         BtnConsultar = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        BtnDeletar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -202,13 +246,13 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/del_user1_.png"))); // NOI18N
-        jButton4.setToolTipText("Deletar");
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton4.setPreferredSize(new java.awt.Dimension(50, 50));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        BtnDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/del_user1_.png"))); // NOI18N
+        BtnDeletar.setToolTipText("Deletar");
+        BtnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnDeletar.setPreferredSize(new java.awt.Dimension(50, 50));
+        BtnDeletar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                BtnDeletarActionPerformed(evt);
             }
         });
 
@@ -228,7 +272,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                         .addGap(28, 28, 28)
                         .addComponent(BtnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 184, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +305,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                 .addGap(52, 52, 52))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {BtnConsultar, BtnEditar, BtnSalvar, jButton4});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {BtnConsultar, BtnDeletar, BtnEditar, BtnSalvar});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,7 +336,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
                     .addComponent(BtnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BtnDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(73, 73, 73))
         );
 
@@ -311,13 +355,14 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
         alterar();
     }//GEN-LAST:event_BtnEditarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void BtnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDeletarActionPerformed
         deletar();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_BtnDeletarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnConsultar;
+    private javax.swing.JButton BtnDeletar;
     private javax.swing.JButton BtnEditar;
     private javax.swing.JButton BtnSalvar;
     private javax.swing.JLabel LblCelular;
@@ -327,7 +372,6 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel LblPerfil;
     private javax.swing.JLabel LblSenha;
     private javax.swing.JComboBox<String> comboPerfil;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPasswordField passSenha;
     private javax.swing.JTextField txtCelular;
