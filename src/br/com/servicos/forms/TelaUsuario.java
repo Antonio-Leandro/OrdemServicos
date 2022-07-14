@@ -67,7 +67,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             pst.setString(5, passSenha.getText());
             pst.setString(6, comboPerfil.getSelectedItem().toString());
 
-            if ((txtId.getText().isEmpty()) || (txtNome.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (passSenha.getText().isEmpty())) {
+            if ((txtId.getText().isEmpty()) || (txtNome.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (passSenha.getText().isEmpty()) || (comboPerfil.getSelectedItem().toString().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "preencha todos os campos obrigatórios!");
             } else {
 
@@ -110,7 +110,7 @@ public class TelaUsuario extends javax.swing.JInternalFrame {
             pst.setString(5, comboPerfil.getSelectedItem().toString());
             pst.setString(6, txtId.getText());
 
-            if ((txtId.getText().isEmpty()) || (txtNome.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (passSenha.getText().isEmpty())) {
+            if ((txtId.getText().isEmpty()) || (txtNome.getText().isEmpty()) || (txtLogin.getText().isEmpty()) || (                        passSenha.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "preencha todos os campos obrigatórios!");
             } else {
 
