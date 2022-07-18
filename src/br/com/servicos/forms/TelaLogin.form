@@ -102,9 +102,6 @@
           <Image iconType="3" name="/br/com/servicos/icones/dberro.png"/>
         </Property>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-      </AccessibilityProperties>
     </Component>
   </SubComponents>
 </Form>
