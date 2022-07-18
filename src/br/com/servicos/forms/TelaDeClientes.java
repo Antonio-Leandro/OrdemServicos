@@ -50,6 +50,8 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
         ComboEstado.setSelectedItem(TblClientes.getModel().getValueAt(setar, 10).toString());
         FormatTelefone.setText(TblClientes.getModel().getValueAt(setar, 11).toString());
         TxtEmail.setText(TblClientes.getModel().getValueAt(setar, 12).toString());
+
+        BtnSalvar.setEnabled(false);
     }
 
     private void salvar() {
@@ -100,9 +102,9 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
         String sql = "select * from tbl_clientes where nomecli like ?";
         try {
             pst = conexao.prepareStatement(sql);
-            pst.setString(1, TxtPesquisaCli.getText()+"%");
+            pst.setString(1, TxtPesquisaCli.getText() + "%");
             rs = pst.executeQuery();
-            
+
             TblClientes.setModel(DbUtils.resultSetToTableModel(rs));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Não foi possivel efetuar a consulta!" + " " + e.getMessage());
@@ -144,7 +146,7 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
             pst.setString(10, ComboEstado.getSelectedItem().toString());
             pst.setString(11, FormatTelefone.getText());
             pst.setString(12, TxtEmail.getText());
-            pst.setString(13, TxtNome.getText());
+            pst.setString(13, TxtIdCliente.getText());
 
             if ((TxtNome.getText().isEmpty()) || (FormatCpf.getText().isEmpty()) || (TxtEndereco.getText().isEmpty()) || (JTxtNumero.getText().isEmpty()) || (FormatCep.getText().isEmpty() || (TxtCidade.getText().isEmpty() || (ComboEstado.getSelectedItem().toString().isEmpty() || (FormatTelefone.getText().isEmpty()))))) {
                 JOptionPane.showMessageDialog(null, "preencha todos os campos obrigatórios!");
@@ -153,6 +155,7 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
                 if (salvo > 0) {
                     JOptionPane.showMessageDialog(null, "Cadastro Atualizado com sucesso!");
                     limpaCampos();
+                    BtnSalvar.setEnabled(true);
                 }
             }
         } catch (SQLException ex) {
@@ -167,6 +170,36 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
             conexao.close();
         } catch (SQLException ex) {
             Logger.getLogger(TelaDeClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void deletar() {
+        conexao = ModuloConexao.conector();
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Exclusão?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "delete from tbl_clientes where id_cli=?";
+            try {
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, TxtIdCliente.getText());
+                int apagado = pst.executeUpdate();
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Cadastro removido com sucesso!");
+                    limpaCampos();
+                    BtnSalvar.setEnabled(true);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi possivel deletar o cadastro!" + ex.getMessage());
+            }
+        }
+        try {
+            pst.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel encerrar o Statement!" + ex.getMessage());
+        }
+        try {
+            conexao.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel fechar a conexão!" + ex.getMessage());
         }
     }
 
@@ -288,6 +321,11 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
 
         BtnDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/del_user1_.png"))); // NOI18N
         BtnDeletar.setPreferredSize(new java.awt.Dimension(50, 50));
+        BtnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDeletarActionPerformed(evt);
+            }
+        });
 
         TxtPesquisaCli.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -502,6 +540,10 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
     private void TblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TblClientesMouseClicked
         setar_campos();
     }//GEN-LAST:event_TblClientesMouseClicked
+
+    private void BtnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDeletarActionPerformed
+        deletar();
+    }//GEN-LAST:event_BtnDeletarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
