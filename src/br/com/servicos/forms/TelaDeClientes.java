@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 public class TelaDeClientes extends javax.swing.JInternalFrame {
@@ -21,6 +22,8 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
     }
 
     private void limpaCampos() {
+        TxtPesquisaCli.setText(null);
+        TxtIdCliente.setText(null);
         TxtNome.setText(null);
         ComboEstadoCivil.setSelectedItem(null);
         FormatCpf.setText(null);
@@ -33,6 +36,7 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
         ComboEstado.setSelectedItem(null);
         FormatTelefone.setText(null);
         TxtEmail.setText(null);
+        ((DefaultTableModel)TblClientes.getModel()).setRowCount(0);
     }
 
     public void setar_campos() {
@@ -99,7 +103,7 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
 
     private void pesquisa_cliente() {
         conexao = ModuloConexao.conector();
-        String sql = "select * from tbl_clientes where nomecli like ?";
+        String sql = "select id_cli as Id,nomecli as Nome,estadocivilcli as 'Estado civil',cpfcli as Cpf,rgcli as Rg,sexocli as sexo,endcli as Endereço,numendcli as Numero,cepcli as Cep,cidadecli as Cidade,estadocli as Estado,fonecli as Telefone,emailcli as Email from tbl_clientes where nomecli like ?";
         try {
             pst = conexao.prepareStatement(sql);
             pst.setString(1, TxtPesquisaCli.getText() + "%");
