@@ -109,12 +109,12 @@
                   <Component id="TxtValorTotal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="BtnSalvar" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="BtnEditar" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
                   <Component id="BtnDeletar" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="BtnBuscar" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton5" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="BtnSalvar" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
@@ -261,7 +261,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="LblId" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="TxtId" max="32767" attributes="0"/>
+                          <Component id="TxtIdCli" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -276,7 +276,7 @@
                           <Component id="LblSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="LblId" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="TxtId" min="-2" max="-2" attributes="0"/>
+                      <Component id="TxtIdCli" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
@@ -302,7 +302,7 @@
             <Property name="text" type="java.lang.String" value="* Id"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="TxtId">
+        <Component class="javax.swing.JTextField" name="TxtIdCli">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -330,12 +330,12 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="90" resizable="false">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="90" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -362,7 +362,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="TxtAreaDescServico">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -377,10 +377,13 @@
     </Component>
     <Component class="javax.swing.JLabel" name="LblValorTotal">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Valor Total"/>
+        <Property name="text" type="java.lang.String" value="Valor Total R$"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="TxtValorTotal">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BtnSalvar">
       <Properties>
@@ -392,6 +395,9 @@
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnSalvarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BtnEditar">
       <Properties>
