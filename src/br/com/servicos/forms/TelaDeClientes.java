@@ -367,8 +367,12 @@ public class TelaDeClientes extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(TblClientes);
         if (TblClientes.getColumnModel().getColumnCount() > 0) {
             TblClientes.getColumnModel().getColumn(0).setPreferredWidth(60);
-            TblClientes.getColumnModel().getColumn(1).setPreferredWidth(150);
-            TblClientes.getColumnModel().getColumn(2).setPreferredWidth(50);
+            TblClientes.getColumnModel().getColumn(1).setPreferredWidth(60);
+            TblClientes.getColumnModel().getColumn(2).setPreferredWidth(70);
+            TblClientes.getColumnModel().getColumn(3).setPreferredWidth(50);
+            TblClientes.getColumnModel().getColumn(4).setPreferredWidth(40);
+            TblClientes.getColumnModel().getColumn(5).setPreferredWidth(35);
+            TblClientes.getColumnModel().getColumn(10).setPreferredWidth(50);
         }
 
         LblIdCliente.setText("Id Clidente");
