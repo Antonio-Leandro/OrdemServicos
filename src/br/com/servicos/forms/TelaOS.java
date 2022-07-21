@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import br.com.servicos.dao.ModuloConexao;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
@@ -22,13 +20,13 @@ public class TelaOS extends javax.swing.JInternalFrame {
     public TelaOS() {
         initComponents();
     }
-    
-    private void LimpaCampos(){
+
+    private void LimpaCampos() {
         TxtNome.setText(null);
         TxtAreaDescServico.setText(null);
         TxtValorTotal.setText(null);
         TxtIdCli.setText(null);
-        ((DefaultTableModel)TblClientes.getModel()).setRowCount(0);
+        ((DefaultTableModel) TblClientes.getModel()).setRowCount(0);
     }
 
     private void PesquisaCliente() {
@@ -78,7 +76,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "preencha todos os campos obrigatórios!");
             } else {
                 int salvo = pst.executeUpdate();
-                if(salvo > 0){
+                if (salvo > 0) {
                     JOptionPane.showMessageDialog(null, "Ordem de serviço emitida com sucesso!");
                     LimpaCampos();
                 }
@@ -87,6 +85,36 @@ public class TelaOS extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Não foi possivel salvar a ordem de serviço!" + ex.getMessage());
         }
 
+    }
+
+    private void ConsultaOs() {
+        conexao = ModuloConexao.conector();
+        String numero_os = JOptionPane.showInputDialog("Número da Ordem de serviço");
+        String sql = "select * from tbl_ordemservicos where os= " + numero_os;
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                TxtOs.setText(rs.getString(1));
+                TxtData.setText(rs.getString(2));
+                String radiotipo = rs.getString(3);
+                if (radiotipo.equals("Ordem de Serviço")) {
+                    RadioOrdemServico.setSelected(true);
+                    tipo = "Ordem de Seviço";
+                } else {
+                    RadioOrcamento.setSelected(true);
+                    tipo = "Orçamento";
+                }
+                ComboSituacao.setSelectedItem(rs.getString(4));
+                TxtAreaDescServico.setText(rs.getString(5));
+                TxtValorTotal.setText(rs.getString(6));
+                TxtIdCli.setText(rs.getString(7));
+            } else {
+                JOptionPane.showMessageDialog(null, "Ordem de serviço não cadastrada!");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel consultar a ordem de serviço!" + ex.getMessage());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -153,6 +181,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
         TxtOs.setEditable(false);
 
         TxtData.setEditable(false);
+        TxtData.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
 
         buttonGroup1.add(RadioOrcamento);
         RadioOrcamento.setText("Orçamento");
@@ -184,8 +213,8 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(RadioOrdemServico)
                     .addComponent(LblData)
-                    .addComponent(TxtData, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(TxtData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,6 +346,11 @@ public class TelaOS extends javax.swing.JInternalFrame {
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/search_3.png"))); // NOI18N
         BtnBuscar.setToolTipText("Consultar");
         BtnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnBuscarActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/print.png"))); // NOI18N
         jButton5.setToolTipText("Imprimir OS");
@@ -417,6 +451,10 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private void BtnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSalvarActionPerformed
         IncluirOs();
     }//GEN-LAST:event_BtnSalvarActionPerformed
+
+    private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
+        ConsultaOs();
+    }//GEN-LAST:event_BtnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
