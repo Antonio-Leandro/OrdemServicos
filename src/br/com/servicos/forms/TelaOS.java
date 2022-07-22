@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import br.com.servicos.dao.ModuloConexao;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
@@ -22,6 +24,8 @@ public class TelaOS extends javax.swing.JInternalFrame {
     }
 
     private void LimpaCampos() {
+        TxtOs.setText(null);
+        TxtData.setText(null);
         TxtNome.setText(null);
         TxtAreaDescServico.setText(null);
         TxtValorTotal.setText(null);
@@ -64,9 +68,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
 
     private void IncluirOs() {
         conexao = ModuloConexao.conector();
-        String slq = "insert into tbl_ordemservicos(tipo_os,situacao_os,servico_os,valor_os,id_cli)values(?,?,?,?,?)";
+        String sql = "insert into tbl_ordemservicos(tipo_os,situacao_os,servico_os,valor_os,id_cli)values(?,?,?,?,?)";
         try {
-            pst = conexao.prepareStatement(slq);
+            pst = conexao.prepareStatement(sql);
             pst.setString(1, tipo);
             pst.setString(2, ComboSituacao.getSelectedItem().toString());
             pst.setString(3, TxtAreaDescServico.getText());
@@ -117,6 +121,57 @@ public class TelaOS extends javax.swing.JInternalFrame {
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Não foi possivel consultar a ordem de serviço!" + ex.getMessage());
+        }
+    }
+
+    private void EditarOs() {
+        conexao = ModuloConexao.conector();
+        String sql = "update tbl_ordemservicos set tipo_os=?,situacao_os=?,servico_os=?,valor_os=? where os=?";
+        try {
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, tipo);
+            pst.setString(2, ComboSituacao.getSelectedItem().toString());
+            pst.setString(3, TxtAreaDescServico.getText());
+            pst.setString(4, TxtValorTotal.getText().replace(",", "."));
+            pst.setString(5, TxtOs.getText());
+            if (TxtAreaDescServico.getText().isEmpty() || (TxtIdCli.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "preencha todos os campos obrigatórios!");
+            } else {
+                int salvo = pst.executeUpdate();
+                if (salvo > 0) {
+                    JOptionPane.showMessageDialog(null, "Ordem de serviço atualizada com sucesso!");
+                    LimpaCampos();
+                    BtnSalvar.setEnabled(true);
+                    TxtNome.setEnabled(true);
+                    TblClientes.setVisible(true);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel atualizar a ordem de serviço!" + ex.getMessage());
+        }
+    }
+
+    private void ExcluirOs() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a Exclusão da OS?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        conexao = ModuloConexao.conector();
+        if (confirma == JOptionPane.YES_OPTION) {
+            String sql = "delete from tbl_ordemservicos where os=?";
+            try {
+                pst = conexao.prepareStatement(sql);
+                pst.setString(1, TxtOs.getText());
+                int apagado = pst.executeUpdate();
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Ordem de serviço apagado com sucesso!");
+                    LimpaCampos();
+                    BtnSalvar.setEnabled(true);
+                    TxtNome.setEnabled(true);
+                    TblClientes.setVisible(true);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaOS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+
         }
     }
 
@@ -341,10 +396,20 @@ public class TelaOS extends javax.swing.JInternalFrame {
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/edit.png"))); // NOI18N
         BtnEditar.setToolTipText("Editar");
         BtnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEditarActionPerformed(evt);
+            }
+        });
 
         BtnDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/delete.png"))); // NOI18N
         BtnDeletar.setToolTipText("Deletar");
         BtnDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BtnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDeletarActionPerformed(evt);
+            }
+        });
 
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/search_3.png"))); // NOI18N
         BtnBuscar.setToolTipText("Consultar");
@@ -458,6 +523,14 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private void BtnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarActionPerformed
         ConsultaOs();
     }//GEN-LAST:event_BtnBuscarActionPerformed
+
+    private void BtnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditarActionPerformed
+        EditarOs();
+    }//GEN-LAST:event_BtnEditarActionPerformed
+
+    private void BtnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDeletarActionPerformed
+        ExcluirOs();
+    }//GEN-LAST:event_BtnDeletarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
