@@ -109,6 +109,9 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 TxtAreaDescServico.setText(rs.getString(5));
                 TxtValorTotal.setText(rs.getString(6));
                 TxtIdCli.setText(rs.getString(7));
+                BtnSalvar.setEnabled(false);
+                TxtNome.setEnabled(false);
+                TblClientes.setVisible(false);
             } else {
                 JOptionPane.showMessageDialog(null, "Ordem de serviço não cadastrada!");
             }
