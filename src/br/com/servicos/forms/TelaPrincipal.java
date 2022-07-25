@@ -27,6 +27,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         MenuItemUsuarios = new javax.swing.JMenuItem();
         MenuRelatorio = new javax.swing.JMenu();
         MenuItemServicos = new javax.swing.JMenuItem();
+        MenuItemClientes = new javax.swing.JMenuItem();
         MenuFinanceiro = new javax.swing.JMenu();
         MenuOpcoes = new javax.swing.JMenu();
         MenuItemSair = new javax.swing.JMenuItem();
@@ -94,6 +95,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenuItemServicos.setText("Serviços");
         MenuRelatorio.add(MenuItemServicos);
+
+        MenuItemClientes.setText("Clientes");
+        MenuRelatorio.add(MenuItemClientes);
 
         Menu.add(MenuRelatorio);
 
@@ -243,6 +247,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu MenuCadatro;
     private javax.swing.JMenu MenuFinanceiro;
     private javax.swing.JMenuItem MenuItemCliente;
+    private javax.swing.JMenuItem MenuItemClientes;
     private javax.swing.JMenuItem MenuItemOS;
     private javax.swing.JMenuItem MenuItemSair;
     private javax.swing.JMenuItem MenuItemServicos;
