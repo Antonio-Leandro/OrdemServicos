@@ -3,14 +3,24 @@ package br.com.servicos.forms;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import br.com.servicos.dao.ModuloConexao;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    Connection conexao = null;
 
     public TelaPrincipal() {
         initComponents();
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -26,8 +36,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         MenuItemOS = new javax.swing.JMenuItem();
         MenuItemUsuarios = new javax.swing.JMenuItem();
         MenuRelatorio = new javax.swing.JMenu();
-        MenuItemServicos = new javax.swing.JMenuItem();
         MenuItemClientes = new javax.swing.JMenuItem();
+        MenuItemServicos = new javax.swing.JMenuItem();
         MenuFinanceiro = new javax.swing.JMenu();
         MenuOpcoes = new javax.swing.JMenu();
         MenuItemSair = new javax.swing.JMenuItem();
@@ -92,12 +102,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         MenuRelatorio.setText("Relatório");
         MenuRelatorio.setEnabled(false);
+        MenuRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuRelatorioActionPerformed(evt);
+            }
+        });
+
+        MenuItemClientes.setText("Clientes");
+        MenuItemClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemClientesActionPerformed(evt);
+            }
+        });
+        MenuRelatorio.add(MenuItemClientes);
 
         MenuItemServicos.setText("Serviços");
         MenuRelatorio.add(MenuItemServicos);
-
-        MenuItemClientes.setText("Clientes");
-        MenuRelatorio.add(MenuItemClientes);
 
         Menu.add(MenuRelatorio);
 
@@ -172,12 +192,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowActivated
 
     private void MenuOpcoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuOpcoesActionPerformed
-        
+
     }//GEN-LAST:event_MenuOpcoesActionPerformed
 
     private void MenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemSairActionPerformed
         int sair = JOptionPane.showConfirmDialog(null, "Deseja mesmo sair?", "Atencão", JOptionPane.YES_NO_OPTION);
-        if(sair == JOptionPane.YES_NO_OPTION){
+        if (sair == JOptionPane.YES_NO_OPTION) {
             System.exit(0);
         }
     }//GEN-LAST:event_MenuItemSairActionPerformed
@@ -205,6 +225,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Desktop.add(os);
     }//GEN-LAST:event_MenuItemOSActionPerformed
 
+    private void MenuRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuRelatorioActionPerformed
+
+    }//GEN-LAST:event_MenuRelatorioActionPerformed
+
+    private void MenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemClientesActionPerformed
+        conexao = ModuloConexao.conector();
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão do Relatório?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            try {
+                JasperPrint print = JasperFillManager.fillReport("C:\\Users\\Limitado - 3584\\Desktop\\NetBeansProjects\\Relatorios\\Clientes.jasper", null, conexao);
+                JasperViewer.viewReport(print, false);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi possivel localizar o Relatório!" + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_MenuItemClientesActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

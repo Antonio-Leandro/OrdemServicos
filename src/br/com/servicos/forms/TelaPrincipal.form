@@ -44,18 +44,24 @@
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuRelatorioActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="MenuItemServicos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Servi&#xe7;os"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="MenuItemClientes">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clientes"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuItemClientesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="MenuItemServicos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Servi&#xe7;os"/>
               </Properties>
             </MenuItem>
           </SubComponents>
