@@ -117,6 +117,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         MenuRelatorio.add(MenuItemClientes);
 
         MenuItemServicos.setText("Serviços");
+        MenuItemServicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuItemServicosActionPerformed(evt);
+            }
+        });
         MenuRelatorio.add(MenuItemServicos);
 
         Menu.add(MenuRelatorio);
@@ -231,7 +236,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void MenuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemClientesActionPerformed
         conexao = ModuloConexao.conector();
-        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão do Relatório?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão do Relatório?", "Atenção!", JOptionPane.YES_NO_OPTION);
         if (confirma == JOptionPane.YES_OPTION) {
             try {
                 JasperPrint print = JasperFillManager.fillReport("C:\\Users\\Limitado - 3584\\Desktop\\NetBeansProjects\\Relatorios\\Clientes.jasper", null, conexao);
@@ -241,6 +246,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_MenuItemClientesActionPerformed
+
+    private void MenuItemServicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemServicosActionPerformed
+        conexao = ModuloConexao.conector();
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão do Relatório?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            try {
+                JasperPrint print = JasperFillManager.fillReport("C:\\Users\\Limitado - 3584\\Desktop\\NetBeansProjects\\Relatorios\\Servicos.jasper", null, conexao);
+                JasperViewer.viewReport(print, false);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi possivel localizar o Relatório!" + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_MenuItemServicosActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
