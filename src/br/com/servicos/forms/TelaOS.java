@@ -5,11 +5,16 @@ import java.sql.ResultSet;
 import br.com.servicos.dao.ModuloConexao;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class TelaOS extends javax.swing.JInternalFrame {
 
@@ -172,6 +177,21 @@ public class TelaOS extends javax.swing.JInternalFrame {
             }
         } else {
 
+        }
+    }
+
+    private void ImprimirOs() {
+        conexao = ModuloConexao.conector();
+        int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão da Ordem de Serviço?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        if (confirma == JOptionPane.YES_OPTION) {
+            try {
+                HashMap filtro = new HashMap();
+                filtro.put("os", Integer.parseInt(TxtOs.getText()));
+                JasperPrint print = JasperFillManager.fillReport("C:\\Users\\Limitado - 3584\\Desktop\\NetBeansProjects\\Relatorios\\OS.jasper", filtro, conexao);
+                JasperViewer.viewReport(print, false);
+            } catch (JRException ex) {
+                JOptionPane.showMessageDialog(null, "Falha na impressão da Ordem de Seviço!" + ex.getMessage());
+            }
         }
     }
 
@@ -423,6 +443,11 @@ public class TelaOS extends javax.swing.JInternalFrame {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/servicos/icones/print.png"))); // NOI18N
         jButton5.setToolTipText("Imprimir OS");
         jButton5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -531,6 +556,10 @@ public class TelaOS extends javax.swing.JInternalFrame {
     private void BtnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDeletarActionPerformed
         ExcluirOs();
     }//GEN-LAST:event_BtnDeletarActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        ImprimirOs();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
