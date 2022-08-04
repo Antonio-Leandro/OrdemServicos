@@ -88,6 +88,7 @@ public class TelaOS extends javax.swing.JInternalFrame {
                 if (salvo > 0) {
                     JOptionPane.showMessageDialog(null, "Ordem de serviço emitida com sucesso!");
                     LimpaCampos();
+                    RecuperaOs();
                 }
             }
         } catch (SQLException ex) {
@@ -192,6 +193,20 @@ public class TelaOS extends javax.swing.JInternalFrame {
             } catch (JRException ex) {
                 JOptionPane.showMessageDialog(null, "Falha na impressão da Ordem de Seviço!" + ex.getMessage());
             }
+        }
+    }
+
+    private void RecuperaOs() {
+        conexao = ModuloConexao.conector();
+        String sql = "select max(os) from tbl_ordemservicos";
+        try {
+            pst = conexao.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                TxtOs.setText(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Falha na Recuperação da OS!" + ex.getMessage());
         }
     }
 
